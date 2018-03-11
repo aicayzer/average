@@ -9,12 +9,10 @@ var questionNumberCorrect = 0;
 var totalQuestionNumber = answers.length;
 var i;
 var askedQuestions = [];
+var repeat;
 
 function play() {
-  ready = confirm("Are you ready to play?");
-  if (ready) {
-    nextQuestion();
-  }
+  nextQuestion();
 }
 
 function randomQuestion() {
@@ -23,12 +21,25 @@ function randomQuestion() {
 }
 
 function noRepeatQuestion() {
-  if (askedQuestions.includes(i)) {
+  for (var y = 0; y < askedQuestions.length; y++) {
+    if (i == askedQuestions[y]) {
+      repeat = true;
+    }
+  }
+  if (repeat) {
     randomQuestion();
   } else {
-    askedQuestions.push(i);
+    repeat = false;
   }
 }
+
+var input = document.getElementById("current_answer");
+input.addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.keyCode === 13) {
+        document.getElementById("check_answer_btn").click();
+    }
+});
 
 function checkAnswer() {
   x = document.getElementById("answer_input");
@@ -57,6 +68,10 @@ function nextQuestion() {
   hideAnswer();
   document.getElementById('question_number').innerHTML = "Question Number: " + questionNumber;
   document.getElementById('correct_number').innerHTML = "Number Correct: " + questionNumberCorrect;
+  if (questionNumber >= questions.length) {
+    hideAnswer();
+    hideQuestion();
+  }
 }
 
 function showQuestion() {
