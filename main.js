@@ -6,18 +6,20 @@ var currentAnswer;
 var x;
 var questionNumber = 1;
 var questionNumberCorrect = 0;
-var totalQuestionNumber = answers.length;
+var startingQuestionNumber = answers.length;
 var i;
 var askedQuestions = [];
 var repeat;
+var questionState = true;
+var gameEnded = false;
 
 function play() {
   nextQuestion();
 }
 
 function randomQuestion() {
-  i = Math.floor(Math.random() * Math.floor(totalQuestionNumber));
-  noRepeatQuestion();
+  i = Math.floor(Math.random() * Math.floor(answers.length));
+  //noRepeatQuestion();
 }
 
 function noRepeatQuestion() {
@@ -33,13 +35,21 @@ function noRepeatQuestion() {
   }
 }
 
-var input = document.getElementById("current_answer");
-input.addEventListener("keyup", function(event) {
-    event.preventDefault();
-    if (event.keyCode === 13) {
-        document.getElementById("check_answer_btn").click();
-    }
-});
+function deleteFromArray() {
+  questions.splice(i, 1);
+  answers.splice(i, 1);
+}
+
+window.addEventListener("keypress", function (e) {
+        var keycode = e.keyCode;
+        if (keycode == 13) {
+          if (questionState && gameEnded == false) {
+            checkAnswer();
+          } else if (gameEnded == false){
+            nextQuestion();
+          }
+        }
+}, false);
 
 function checkAnswer() {
   x = document.getElementById("answer_input");
@@ -51,27 +61,36 @@ function checkAnswer() {
     document.getElementById('correct_incorrect').innerHTML = "You got it WRONG!";
     document.getElementById('correct_answer').innerHTML = "The correct answer is " + answers[i];
   }
-  questionNumber++;
   reset();
+  questionState = false;
 }
 
 function reset() {
+  questionNumber++;
+  deleteFromArray();
   hideQuestion();
   showAnswer();
   document.getElementById("answer_input").reset();
+  //for development
+  console.log(i);
+  console.log(answers[i]);
+  console.log(questions[i]);
 }
 
 function nextQuestion() {
+  if (questionNumber >= startingQuestionNumber) {
+    hideAnswer();
+    hideQuestion();
+    console.log("end");
+    gameEnded = true;
+  }
   randomQuestion();
   document.getElementById('question').innerHTML = questions[i];
   showQuestion();
   hideAnswer();
   document.getElementById('question_number').innerHTML = "Question Number: " + questionNumber;
   document.getElementById('correct_number').innerHTML = "Number Correct: " + questionNumberCorrect;
-  if (questionNumber >= questions.length) {
-    hideAnswer();
-    hideQuestion();
-  }
+  questionState = true;
 }
 
 function showQuestion() {
