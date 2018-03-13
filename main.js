@@ -40,15 +40,15 @@ function deleteFromArray() {
   answers.splice(i, 1);
 }
 
-window.addEventListener("keypress", function (e) {
-        var keycode = e.keyCode;
-        if (keycode == 13) {
-          if (questionState && gameEnded == false) {
-            checkAnswer();
-          } else if (gameEnded == false){
-            nextQuestion();
-          }
-        }
+window.addEventListener("keypress", function(e) {
+  var keycode = e.keyCode;
+  if (keycode == 13) {
+    if (questionState && gameEnded == false) {
+      document.getElementById("check_answer_btn").click();
+    } else if (gameEnded == false) {
+      document.getElementById("next_question_btn").click();
+    }
+  }
 }, false);
 
 function checkAnswer() {
@@ -56,7 +56,7 @@ function checkAnswer() {
   currentAnswer = x.elements["answer"].value;
   if (currentAnswer == answers[i]) {
     document.getElementById('correct_incorrect').innerHTML = "You got it RIGHT!";
-    questionNumberCorrect ++;
+    questionNumberCorrect++;
   } else {
     document.getElementById('correct_incorrect').innerHTML = "You got it WRONG!";
     document.getElementById('correct_answer').innerHTML = "The correct answer is " + answers[i];
