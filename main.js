@@ -21,9 +21,17 @@ window.addEventListener("keypress", function(e) {
   }
 }, false);
 
+
 function play() {
   nextQuestion();
+  autoSelectInput();
   console.log("play");
+}
+
+function autoSelectInput() {
+  var input = document.getElementById('current_answer');
+  input.focus();
+  input.select();
 }
 
 function randomQuestion() {
@@ -81,6 +89,7 @@ function nextQuestion() {
   document.getElementById('question').innerHTML = questions[i];
   showQuestion();
   hideAnswer();
+  autoSelectInput();
   document.getElementById('question_number').innerHTML = "Question Number: " + questionNumber;
   document.getElementById('correct_number').innerHTML = "Number Correct: " + questionNumberCorrect;
   questionState = true;
