@@ -13,43 +13,41 @@ var repeat;
 var questionState = true;
 var gameEnded = false;
 
+window.addEventListener("keypress", function(e) {
+  var keycode = e.keyCode;
+  if (keycode == 13) {
+    e.preventDefault();
+    enterKeyChoose();
+  }
+}, false);
+
 function play() {
   nextQuestion();
+  console.log("play");
 }
 
 function randomQuestion() {
   i = Math.floor(Math.random() * Math.floor(answers.length));
   //noRepeatQuestion();
-}
-
-function noRepeatQuestion() {
-  for (var y = 0; y < askedQuestions.length; y++) {
-    if (i == askedQuestions[y]) {
-      repeat = true;
-    }
-  }
-  if (repeat) {
-    randomQuestion();
-  } else {
-    repeat = false;
-  }
+  console.log("randomQuestion");
 }
 
 function deleteFromArray() {
   questions.splice(i, 1);
   answers.splice(i, 1);
+  console.log("deleteFromArray");
 }
 
-window.addEventListener("keypress", function(e) {
-  var keycode = e.keyCode;
-  if (keycode == 13) {
-    if (questionState && gameEnded == false) {
+function enterKeyChoose() {
+  if (gameEnded == false) {
+    if (questionState) {
       document.getElementById("check_answer_btn").click();
-    } else if (gameEnded == false) {
+    } else {
       document.getElementById("next_question_btn").click();
     }
   }
-}, false);
+  console.log("enterKeyChoose");
+}
 
 function checkAnswer() {
   x = document.getElementById("answer_input");
@@ -63,6 +61,7 @@ function checkAnswer() {
   }
   reset();
   questionState = false;
+  console.log("checkAnswer");
 }
 
 function reset() {
@@ -71,19 +70,13 @@ function reset() {
   hideQuestion();
   showAnswer();
   document.getElementById("answer_input").reset();
-  //for development
-  console.log(i);
-  console.log(answers[i]);
-  console.log(questions[i]);
+  if (questionNumber >= startingQuestionNumber) {
+    end();
+  }
+  console.log("reset");
 }
 
 function nextQuestion() {
-  if (questionNumber >= startingQuestionNumber) {
-    hideAnswer();
-    hideQuestion();
-    console.log("end");
-    gameEnded = true;
-  }
   randomQuestion();
   document.getElementById('question').innerHTML = questions[i];
   showQuestion();
@@ -91,28 +84,40 @@ function nextQuestion() {
   document.getElementById('question_number').innerHTML = "Question Number: " + questionNumber;
   document.getElementById('correct_number').innerHTML = "Number Correct: " + questionNumberCorrect;
   questionState = true;
+  console.log("nextQuestion");
 }
 
 function showQuestion() {
   document.getElementById('question').style.display = "block";
   document.getElementById('answer_input').style.display = "block";
   document.getElementById('check_answer_btn').style.display = "block";
+  console.log("showQuestion");
 }
 
 function showAnswer() {
   document.getElementById('next_question_btn').style.display = "block";
   document.getElementById('correct_incorrect').style.display = "block";
   document.getElementById('correct_answer').style.display = "block";
+  console.log("showAnswer");
 }
 
 function hideQuestion() {
   document.getElementById('question').style.display = "none";
   document.getElementById('answer_input').style.display = "none";
   document.getElementById('check_answer_btn').style.display = "none";
+  console.log("hideQuestion");
 }
 
 function hideAnswer() {
   document.getElementById('next_question_btn').style.display = "none";
   document.getElementById('correct_incorrect').style.display = "none";
   document.getElementById('correct_answer').style.display = "none";
+  console.log("hideAnswer");
+}
+
+function end() {
+  hideQuestion();
+  hideAnswer();
+  gameEnded = true;
+  console.log("end");
 }
