@@ -12,6 +12,7 @@ var askedQuestions = [];
 var repeat;
 var questionState = true;
 var gameEnded = false;
+var distanceAway;
 
 window.addEventListener("keypress", function(e) {
   var keycode = e.keyCode;
@@ -62,14 +63,25 @@ function checkAnswer() {
   currentAnswer = x.elements["answer"].value;
   if (currentAnswer == answers[i]) {
     document.getElementById('correct_incorrect').innerHTML = "You got it RIGHT!";
+    document.getElementById('correct_answer').innerHTML = "The correct answer is " + answers[i];
     questionNumberCorrect++;
   } else {
+    calculateDistanceAway();
     document.getElementById('correct_incorrect').innerHTML = "You got it WRONG!";
     document.getElementById('correct_answer').innerHTML = "The correct answer is " + answers[i];
+    document.getElementById('distance_away').innerHTML = "You were " + distanceAway.toFixed(0) + "% away"
   }
   reset();
   questionState = false;
   console.log("checkAnswer");
+}
+
+function calculateDistanceAway() {
+  if (current_answer > answers[i]) {
+    distanceAway = Math.abs(((currentAnswer - answers[i])/answers[i])*100);
+  } else {
+    distanceAway = Math.abs(((answers[i] - currentAnswer)/answers[i])*100);
+  }
 }
 
 function reset() {
@@ -107,6 +119,7 @@ function showAnswer() {
   document.getElementById('next_question_btn').style.display = "block";
   document.getElementById('correct_incorrect').style.display = "block";
   document.getElementById('correct_answer').style.display = "block";
+  document.getElementById('distance_away').style.display = "block";
   console.log("showAnswer");
 }
 
@@ -121,6 +134,7 @@ function hideAnswer() {
   document.getElementById('next_question_btn').style.display = "none";
   document.getElementById('correct_incorrect').style.display = "none";
   document.getElementById('correct_answer').style.display = "none";
+  document.getElementById('distance_away').style.display = "none";
   console.log("hideAnswer");
 }
 
