@@ -77,7 +77,9 @@ function checkAnswer() {
 }
 
 function calculateDistanceAway() {
-  if (current_answer > answers[i]) {
+  if (current_answer = answer[i]) {
+    distanceAway = (" ")
+  } else if (current_answer > answers[i]) {
     distanceAway = Math.abs(((currentAnswer - answers[i])/answers[i])*100);
   } else {
     distanceAway = Math.abs(((answers[i] - currentAnswer)/answers[i])*100);
